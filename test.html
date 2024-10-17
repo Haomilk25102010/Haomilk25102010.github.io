@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSTAT DDOS TESTER</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="requestChart" width="400" height="200"></canvas>
+
+    <script>
+        const ctx = document.getElementById('requestChart').getContext('2d');
+        const requestData = [];
+        const labels = [];
+        let requestCount = 0;
+
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Requested',
+                    data: requestData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function updateChart() {
+            if (labels.length >= 60) {
+                labels.shift();
+                requestData.shift();
+            }
+
+            labels.push(`${labels.length}`);
+            requestCount = Math.floor(Math.random() * 10); 
+            requestData.push(requestCount);
+
+            myChart.update();
+        }
+
+        setInterval(updateChart, 1000); 
+    </script>
+</body>
+</html>
