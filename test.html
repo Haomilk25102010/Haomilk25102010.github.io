@@ -8,12 +8,14 @@
 </head>
 <body>
     <canvas id="requestChart" width="400" height="200"></canvas>
+    <div id="notification" style="margin-top: 20px; font-size: 18px;"></div>
 
     <script>
         const ctx = document.getElementById('requestChart').getContext('2d');
         const requestData = [];
         const labels = [];
         let requestCount = 0;
+        let totalRequests = 0;
 
         const myChart = new Chart(ctx, {
             type: 'line',
@@ -42,14 +44,31 @@
                 requestData.shift();
             }
 
+            const currentRequests = Math.floor(Math.random() * 10); 
+            requestData.push(currentRequests);
             labels.push(`${labels.length}`);
-            requestCount = Math.floor(Math.random() * 10); 
-            requestData.push(requestCount);
+
+            totalRequests += currentRequests;
 
             myChart.update();
         }
 
-        setInterval(updateChart, 1000); 
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.innerText = `Total Last 1 minute: ${totalRequests}`;
+            totalRequests = 0; 
+
+            setTimeout(() => {
+                notification.innerText = '';
+            }, 8000); 
+        }
+
+        setInterval(() => {
+            updateChart();
+            showNotification();
+        }, 60000); 
+
+        setInterval(updateChart, 1000);
     </script>
 </body>
 </html>
