@@ -41,19 +41,17 @@ function updateAccessCount() {
     timestamps.push(currentTime.getMinutes() * 60 + currentTime.getSeconds());
     counts.push(accessCount);
 
-
     accessChart.data.labels = timestamps;
     accessChart.data.datasets[0].data = counts;
     accessChart.update();
-
-    // Show notification every minute
     if (currentTime.getSeconds() === 0) {
         notification.innerText = `Total ${accessCount}`;
         notification.style.display = 'block';
         setTimeout(() => {
             notification.style.display = 'none';
-        }, 10000); // Hiện trong 10 giây
+        }, 10000); 
     }
 }
 
-setInterval(updateAccessCount, 1000);
+
+window.onload = updateAccessCount;
